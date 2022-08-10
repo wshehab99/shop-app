@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/modules/onboarding_screen.dart';
+import 'package:shop_app/shared/constant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shop App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: lightThem,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.dark,
       home: OnBoardinScreen(),
       debugShowCheckedModeBanner: false,
     );
