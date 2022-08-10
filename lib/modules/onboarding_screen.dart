@@ -30,14 +30,18 @@ class OnBoardinScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen()));
-                },
-                child: const Text("Skip"))
+            IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+              },
+              icon: Text(
+                "Skip",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            )
           ],
         ),
         body: Stack(
@@ -62,8 +66,8 @@ class OnBoardinScreen extends StatelessWidget {
               child: SmoothPageIndicator(
                   controller: controller,
                   count: models.length,
-                  effect: const WormEffect(
-                    activeDotColor: Colors.blue,
+                  effect: WormEffect(
+                    activeDotColor: Theme.of(context).primaryColor,
                     dotColor: Colors.grey,
                     dotHeight: 10.0,
                     spacing: 10,
@@ -71,9 +75,10 @@ class OnBoardinScreen extends StatelessWidget {
                   )),
             ),
             Positioned(
-              right: 0,
+              right: 5,
               top: MediaQuery.of(context).size.height * 0.40,
               child: FloatingActionButton(
+                elevation: 10,
                 onPressed: () {
                   controller.nextPage(
                       duration: const Duration(seconds: 1),
