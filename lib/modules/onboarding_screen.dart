@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/layout/screens/login_screen.dart';
 import 'package:shop_app/layout/widgets/page_veiw_item.dart';
+import 'package:shop_app/layout/widgets/shop_text_button.dart';
 import 'package:shop_app/models/boarding_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -30,17 +31,12 @@ class OnBoardinScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
+            ShopTextButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
-              icon: Text(
-                "Skip",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+              text: 'SKIP',
             )
           ],
         ),
@@ -84,10 +80,8 @@ class OnBoardinScreen extends StatelessWidget {
                       duration: const Duration(seconds: 1),
                       curve: Curves.fastLinearToSlowEaseIn);
                   if (currentIndex == models.length - 1) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   }
                 },
                 child: const Icon(Icons.arrow_forward_ios),

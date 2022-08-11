@@ -2,37 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData lightThem = ThemeData(
-  iconTheme: const IconThemeData(
-    color: Colors.black,
-  ),
-  primarySwatch: Colors.deepOrange,
-  floatingActionButtonTheme:
-      const FloatingActionButtonThemeData(backgroundColor: Colors.deepOrange),
-  scaffoldBackgroundColor: Colors.white,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.white,
-    elevation: 0,
-    systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark),
-    titleTextStyle: TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
+    iconTheme: const IconThemeData(
       color: Colors.black,
     ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.deepOrange,
-      elevation: 20.0),
-  textTheme: const TextTheme(
-    bodyText1: TextStyle(
-        fontSize: 22, fontWeight: FontWeight.w700, color: Colors.black),
-  ),
-);
+    primarySwatch: Colors.blue,
+    floatingActionButtonTheme:
+        const FloatingActionButtonThemeData(backgroundColor: Colors.blue),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark),
+      titleTextStyle: TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        elevation: 20.0),
+    textTheme: const TextTheme(
+      bodyText1: TextStyle(
+          fontSize: 22, fontWeight: FontWeight.w700, color: Colors.black),
+      bodyText2: TextStyle(
+          fontSize: 18, fontWeight: FontWeight.normal, color: Colors.grey),
+    ));
 ThemeData darkTheme = ThemeData(
-  primarySwatch: Colors.deepOrange,
+  primarySwatch: Colors.blue,
   floatingActionButtonTheme:
-      const FloatingActionButtonThemeData(backgroundColor: Colors.deepOrange),
+      const FloatingActionButtonThemeData(backgroundColor: Colors.blue),
   scaffoldBackgroundColor: const Color.fromRGBO(51, 55, 57, 1),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromRGBO(51, 55, 57, 1),
@@ -48,7 +50,7 @@ ThemeData darkTheme = ThemeData(
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.deepOrange,
+      selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.white,
       backgroundColor: Color.fromRGBO(51, 55, 57, 1),
       elevation: 20.0),
@@ -58,5 +60,7 @@ ThemeData darkTheme = ThemeData(
   textTheme: const TextTheme(
     bodyText1: TextStyle(
         fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
+    bodyText2: TextStyle(
+        fontSize: 18, fontWeight: FontWeight.normal, color: Colors.grey),
   ),
 );
