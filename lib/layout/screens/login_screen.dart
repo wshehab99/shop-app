@@ -6,6 +6,7 @@ import 'package:shop_app/layout/screens/register_screen.dart';
 import 'package:shop_app/layout/widgets/shop_button.dart';
 import 'package:shop_app/layout/widgets/shop_text_button.dart';
 import 'package:shop_app/layout/widgets/shop_text_field.dart';
+import 'package:shop_app/layout/widgets/toast.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -16,7 +17,11 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AppCubit(InitialAppState()),
-      child: BlocBuilder<AppCubit, AppStates>(builder: (context, state) {
+      child: BlocConsumer<AppCubit, AppStates>(listener: ((context, state) {
+        if (state is LoginSuccessState) {
+          AppToast.showToast(message: state.model.message!);
+        }
+      }), builder: (context, state) {
         return Scaffold(
           appBar: AppBar(),
           body: Padding(

@@ -6,19 +6,20 @@ class CacheHelper {
     shared = await SharedPreferences.getInstance();
   }
 
-  static bool getBool({required String key}) {
-    return shared!.getBool(key)!;
+  static Future getData({required String key}) async {
+    return shared!.get(key);
   }
 
-  static Future<bool> setBool({required String key, required bool value}) {
-    return shared!.setBool(key, value);
-  }
-
-  static String getString({required String key}) {
-    return shared!.getString(key)!;
-  }
-
-  static Future<bool> setString({required String key, required String value}) {
-    return shared!.setString(key, value);
+  static Future<bool> saveData(
+      {required String key, required dynamic value}) async {
+    if (value is String) {
+      return await shared!.setString(key, value);
+    } else if (value is bool) {
+      return await shared!.setBool(key, value);
+    } else if (value is double) {
+      return await shared!.setDouble(key, value);
+    } else {
+      return await shared!.setInt(key, value);
+    }
   }
 }
