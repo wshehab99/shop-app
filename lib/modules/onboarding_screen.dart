@@ -3,6 +3,7 @@ import 'package:shop_app/layout/screens/login_screen.dart';
 import 'package:shop_app/layout/widgets/page_veiw_item.dart';
 import 'package:shop_app/layout/widgets/shop_text_button.dart';
 import 'package:shop_app/models/boarding_model.dart';
+import 'package:shop_app/shared/local/cache_helper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardinScreen extends StatelessWidget {
@@ -26,6 +27,12 @@ class OnBoardinScreen extends StatelessWidget {
       image: 'assets/images/onboarding3.png',
     ),
   ];
+  void submited(context) async {
+    await CacheHelper.saveData(key: "onBoarding", value: true);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +40,7 @@ class OnBoardinScreen extends StatelessWidget {
           actions: [
             ShopTextButton(
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                submited(context);
               },
               text: 'SKIP',
             )
@@ -80,8 +86,7 @@ class OnBoardinScreen extends StatelessWidget {
                       duration: const Duration(seconds: 1),
                       curve: Curves.fastLinearToSlowEaseIn);
                   if (currentIndex == models.length - 1) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    submited(context);
                   }
                 },
                 child: const Icon(Icons.arrow_forward_ios),

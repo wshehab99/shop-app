@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_states.dart';
+import 'package:shop_app/models/shop_login_model.dart';
 import 'package:shop_app/shared/network/dio_helper.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -17,8 +18,9 @@ class AppCubit extends Cubit<AppStates> {
         "password": password,
       },
     ).then((value) {
-      emit(LoginSuccessState());
-      print(value.data);
+      LoginModel model = LoginModel.fromJson(json: value.data);
+      print(model.status);
+      emit(LoginSuccessState(model: model));
     }).catchError((onError) {
       print(onError);
       emit(LoginErrorState(error: onError.toString()));
