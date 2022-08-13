@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ShopTextField extends StatelessWidget {
-  const ShopTextField(
-      {Key? key,
-      this.controller,
-      this.type = TextInputType.name,
-      this.label,
-      this.validate,
-      this.prefix,
-      this.suffix,
-      this.isPassword = false})
-      : super(key: key);
+  const ShopTextField({
+    Key? key,
+    this.controller,
+    this.type = TextInputType.name,
+    this.label,
+    this.validate,
+    this.prefix,
+    this.suffix,
+    this.isPassword = false,
+  }) : super(key: key);
   final TextEditingController? controller;
   final TextInputType type;
   final String? label;

@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_cubit.dart';
 import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/layout/screens/register_screen.dart';
+import 'package:shop_app/layout/screens/shop_layout.dart';
 import 'package:shop_app/layout/widgets/shop_button.dart';
 import 'package:shop_app/layout/widgets/shop_text_button.dart';
 import 'package:shop_app/layout/widgets/shop_text_field.dart';
 import 'package:shop_app/layout/widgets/toast.dart';
+import 'package:shop_app/shared/local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -19,7 +21,19 @@ class LoginScreen extends StatelessWidget {
       create: (context) => AppCubit(InitialAppState()),
       child: BlocConsumer<AppCubit, AppStates>(listener: ((context, state) {
         if (state is LoginSuccessState) {
-          AppToast.showToast(message: state.model.message!);
+          if (state.model.status!) {
+            CacheHelper.saveData(
+              key: "token",
+              value: state.model.userData!.token,
+            ).then((value) {
+              if (value) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ShopLayout()));
+              }
+            });
+          } else {
+            AppToast.showToast(message: state.model.message!);
+          }
         }
       }), builder: (context, state) {
         return Scaffold(
@@ -120,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterScreen()));
+                                              RegisterScreen()));
                                 }),
                           ],
                         )

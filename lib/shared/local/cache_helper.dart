@@ -22,4 +22,8 @@ class CacheHelper {
       return await shared!.setInt(key, value);
     }
   }
+
+  static Future<bool> deleteData({required String key}) async {
+    return await shared!.remove(key);
+  }
 }
