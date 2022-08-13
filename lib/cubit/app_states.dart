@@ -17,3 +17,12 @@ class LoginErrorState extends AppStates {
 }
 
 class ChangePasswordVisablityState extends AppStates {}
+
+class ChangeNavigationBarScreenState extends AppStates {}
+
+class GetProductsSuccessState extends AppStates {}
+
+class GetProductserrorState extends AppStates {
+  String error;
+  GetProductserrorState({required this.error});
+}
