@@ -22,12 +22,13 @@ ThemeData lightThem = ThemeData(
       ),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedIconTheme: IconThemeData(
-          size: 30,
-        ),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue,
-        elevation: 20.0),
+      selectedIconTheme: IconThemeData(
+        size: 30,
+      ),
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.blue,
+      elevation: 20.0,
+    ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w700, color: Colors.black),

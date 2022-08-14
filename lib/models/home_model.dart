@@ -11,7 +11,7 @@ class HomeModel {
 
 class HomeModelData {
   List<Banner> banners = [];
-  List products = [];
+  List<Product> products = [];
   HomeModelData.fromJson({required Map<String, dynamic> json}) {
     json['banners'].forEach((element) {
       banners.add(Banner.fromJson(json: element));

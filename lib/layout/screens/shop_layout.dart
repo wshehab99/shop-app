@@ -11,7 +11,9 @@ import 'package:shop_app/layout/widgets/nav_bar_widget.dart';
 
 class ShopLayout extends StatelessWidget {
   ShopLayout({Key? key}) : super(key: key);
-  final List<Widget> screens = [
+  final ScrollController _controller = ScrollController();
+
+  List<Widget> screens = [
     const ProductsScreen(),
     const CategoriesScreen(),
     const FavoriteScreen(),
@@ -19,6 +21,12 @@ class ShopLayout extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    screens = [
+      ProductsScreen(controller: _controller),
+      const CategoriesScreen(),
+      const FavoriteScreen(),
+      const SettingsScreen(),
+    ];
     return BlocProvider(
         create: (context) => AppCubit(InitialAppState())..getProducts(),
         child: BlocBuilder<AppCubit, AppStates>(
@@ -28,6 +36,13 @@ class ShopLayout extends StatelessWidget {
               bottomNavigationBar: NavBarWidget(
                 index: cubit.currentIndex,
                 onTap: (value) {
+                  if (value == 0 && value == cubit.currentIndex) {
+                    _controller.animateTo(
+                      _controller.position.minScrollExtent,
+                      duration: const Duration(seconds: 1, milliseconds: 500),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  }
                   cubit.changeBottomNavIndex(value);
                 },
               ),
