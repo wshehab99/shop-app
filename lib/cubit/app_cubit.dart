@@ -9,6 +9,8 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit(super.initialState);
   bool showPassword = true;
   int currentIndex = 0;
+  HomeModel? model;
+
   void changeBottomNavIndex(int index) {
     currentIndex = index;
     emit(ChangeNavigationBarScreenState());
@@ -20,12 +22,13 @@ class AppCubit extends Cubit<AppStates> {
   }) {
     emit(LoadingState());
     DioHelper.postData(
-      url: "login",
-      data: {
-        'email': email,
-        "password": password,
-      },
-    ).then((value) {
+            url: "login",
+            data: {
+              'email': email,
+              "password": password,
+            },
+            lang: 'en')
+        .then((value) {
       LoginModel model = LoginModel.fromJson(json: value.data);
       print(model.status);
       emit(LoginSuccessState(model: model));
@@ -43,14 +46,15 @@ class AppCubit extends Cubit<AppStates> {
   }) {
     emit(LoadingState());
     DioHelper.postData(
-      url: "register",
-      data: {
-        'email': email,
-        "password": password,
-        'name': name,
-        'phone': phone,
-      },
-    ).then((value) {
+            url: "register",
+            data: {
+              'email': email,
+              "password": password,
+              'name': name,
+              'phone': phone,
+            },
+            lang: 'en')
+        .then((value) {
       LoginModel model = LoginModel.fromJson(json: value.data);
       print(model.status);
       emit(LoginSuccessState(model: model));
@@ -71,10 +75,9 @@ class AppCubit extends Cubit<AppStates> {
     CacheHelper.getData(key: 'token').then((value) {
       token = value;
     });
-    DioHelper.getData(url: 'home', token: token).then((value) {
-      HomeModel? model;
+    DioHelper.getData(url: 'home', token: token, lang: 'en').then((value) {
       model = HomeModel.fromJson(json: value.data);
-      print(model.data!.products);
+
       emit(GetProductsSuccessState());
     }).catchError((error) {
       print(error);
