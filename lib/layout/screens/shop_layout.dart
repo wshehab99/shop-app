@@ -23,12 +23,16 @@ class ShopLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     screens = [
       ProductsScreen(controller: _controller),
-      const CategoriesScreen(),
+      CategoriesScreen(
+        controller: _controller,
+      ),
       const FavoriteScreen(),
       const SettingsScreen(),
     ];
     return BlocProvider(
-        create: (context) => AppCubit(InitialAppState())..getProducts(),
+        create: (context) => AppCubit(InitialAppState())
+          ..getProducts()
+          ..getCategories(),
         child: BlocBuilder<AppCubit, AppStates>(
           builder: ((context, state) {
             AppCubit cubit = context.read<AppCubit>();
@@ -36,7 +40,8 @@ class ShopLayout extends StatelessWidget {
               bottomNavigationBar: NavBarWidget(
                 index: cubit.currentIndex,
                 onTap: (value) {
-                  if (value == 0 && value == cubit.currentIndex) {
+                  if ((value == 0 || value == 1) &&
+                      value == cubit.currentIndex) {
                     _controller.animateTo(
                       _controller.position.minScrollExtent,
                       duration: const Duration(seconds: 1, milliseconds: 500),

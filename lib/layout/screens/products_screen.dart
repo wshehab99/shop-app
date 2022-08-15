@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_cubit.dart';
 import 'package:shop_app/cubit/app_states.dart';
+import 'package:shop_app/layout/widgets/categoty_list_widget.dart';
 import 'package:shop_app/layout/widgets/product_grid_widget.dart';
 import 'package:shop_app/layout/widgets/shop_slider.dart';
 
@@ -16,7 +17,9 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppStates>(builder: (context, state) {
       AppCubit cubit = context.read<AppCubit>();
-      if (state is LoadingState) {
+      if (state is LoadingState ||
+          cubit.productModel == null ||
+          cubit.categoriesModel == null) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -25,15 +28,21 @@ class ProductsScreen extends StatelessWidget {
           controller: controller,
           physics: const BouncingScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ShopSlider(
-                items: cubit.model!.data!.banners
+                items: cubit.productModel!.data!.banners
                     .map((e) => Image(
                           image: NetworkImage(e.image!),
                           fit: BoxFit.cover,
                         ))
                     .toList(),
               ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              CategoryListWidget(
+                  items: cubit.categoriesModel!.data!.categories),
               const SizedBox(
                 height: 10.0,
               ),
@@ -46,9 +55,9 @@ class ProductsScreen extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 children: List.generate(
-                  cubit.model!.data!.products.length,
+                  cubit.productModel!.data!.products.length,
                   (index) => ProductGridWidget(
-                      model: cubit.model!.data!.products[index]),
+                      model: cubit.productModel!.data!.products[index]),
                 ),
               ),
             ],
