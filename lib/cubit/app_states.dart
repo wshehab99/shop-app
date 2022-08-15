@@ -26,3 +26,17 @@ class GetProductserrorState extends AppStates {
   String error;
   GetProductserrorState({required this.error});
 }
+
+class GetCategoriesSuccessState extends AppStates {}
+
+class GetCategorieserrorState extends AppStates {
+  String error;
+  GetCategorieserrorState({required this.error});
+}
+
+class ChangeFavoritesSuccessState extends AppStates {}
+
+class ChangeFavoritesErrorState extends AppStates {
+  String error;
+  ChangeFavoritesErrorState({required this.error});
+}
