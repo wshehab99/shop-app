@@ -6,6 +6,8 @@ import 'package:shop_app/models/shop_login_model.dart';
 import 'package:shop_app/shared/local/cache_helper.dart';
 import 'package:shop_app/shared/network/dio_helper.dart';
 
+import '../models/change_favorites_model.dart';
+
 class AppCubit extends Cubit<AppStates> {
   AppCubit(super.initialState);
   bool showPassword = true;
@@ -103,11 +105,11 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  ChangeFavoritesModel? favoritesModel;
   void changeFavorite({required int productId}) {
     String? token;
     CacheHelper.getData(key: 'token').then((value) {
       token = value;
-      print(token);
     });
     DioHelper.postData(
       url: "favorites",
@@ -115,8 +117,9 @@ class AppCubit extends Cubit<AppStates> {
         'product_id': productId,
       },
       token: token,
+      lang: 'en',
     ).then((value) {
-      print(value.data);
+      favoritesModel = ChangeFavoritesModel.fromJson(json: value.data);
       emit(ChangeFavoritesSuccessState());
       emit(state);
     }).catchError((onError) {

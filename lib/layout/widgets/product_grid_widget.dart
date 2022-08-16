@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_cubit.dart';
 import 'package:shop_app/cubit/app_states.dart';
+import 'package:shop_app/layout/widgets/toast.dart';
 import 'package:shop_app/models/home_model.dart';
 
 class ProductGridWidget extends StatelessWidget {
@@ -10,7 +11,12 @@ class ProductGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppStates>(builder: (context, state) {
+    return BlocConsumer<AppCubit, AppStates>(listener: ((context, state) {
+      if (state is ChangeFavoritesSuccessState) {
+        AppToast.showToast(
+            message: context.read<AppCubit>().favoritesModel!.message!);
+      }
+    }), builder: (context, state) {
       return Column(
         children: [
           Stack(
