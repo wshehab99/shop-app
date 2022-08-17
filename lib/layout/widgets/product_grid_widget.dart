@@ -3,18 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_cubit.dart';
 import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/layout/widgets/toast.dart';
-import 'package:shop_app/models/home_model.dart';
+
+import '../../models/prooduct_model.dart';
 
 class ProductGridWidget extends StatelessWidget {
-  const ProductGridWidget({Key? key, required this.model}) : super(key: key);
+  const ProductGridWidget({Key? key, required this.model, this.index})
+      : super(key: key);
   final Product model;
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
+    AppCubit cubit = context.read<AppCubit>();
     return BlocConsumer<AppCubit, AppStates>(listener: ((context, state) {
       if (state is ChangeFavoritesSuccessState) {
-        AppToast.showToast(
-            message: context.read<AppCubit>().favoritesModel!.message!);
+        AppToast.showToast(message: cubit.favoritesModel!.message!);
       }
     }), builder: (context, state) {
       return Column(
@@ -93,9 +96,10 @@ class ProductGridWidget extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       color: Colors.red.shade100,
                       onPressed: () {
-                        context
-                            .read<AppCubit>()
-                            .changeFavorite(productId: model.id!);
+                        cubit.changeFavorite(
+                          productId: model.id!,
+                          index: index,
+                        );
                       },
                       icon: model.isFavorite!
                           ? Icon(

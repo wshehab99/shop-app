@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/models/categories_model.dart';
@@ -25,13 +26,13 @@ class AppCubit extends Cubit<AppStates> {
   }) {
     emit(LoadingState());
     DioHelper.postData(
-            url: "login",
-            data: {
-              'email': email,
-              "password": password,
-            },
-            lang: 'en')
-        .then((value) {
+      url: "login",
+      data: {
+        'email': email,
+        "password": password,
+      },
+      lang: 'en',
+    ).then((value) {
       LoginModel model = LoginModel.fromJson(json: value.data);
       print(model.status);
       emit(LoginSuccessState(model: model));
@@ -72,12 +73,9 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangePasswordVisablityState());
   }
 
-  void getProducts() {
+  void getProducts() async {
     emit(LoadingState());
-    String? token;
-    CacheHelper.getData(key: 'token').then((value) {
-      token = value;
-    });
+    String? token = await CacheHelper.getData(key: 'token');
     DioHelper.getData(url: 'home', token: token, lang: 'en').then((value) {
       productModel = HomeModel.fromJson(json: value.data);
 
@@ -89,12 +87,9 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   CategoriesModel? categoriesModel;
-  void getCategories() {
+  void getCategories() async {
     emit(LoadingState());
-    String? token;
-    CacheHelper.getData(key: 'token').then((value) {
-      token = value;
-    });
+    String? token = await CacheHelper.getData(key: 'token');
     DioHelper.getData(url: 'categories', token: token, lang: 'en')
         .then((value) {
       categoriesModel = CategoriesModel.fromJson(json: value.data);
@@ -106,22 +101,50 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   ChangeFavoritesModel? favoritesModel;
-  void changeFavorite({required int productId}) {
-    String? token;
-    CacheHelper.getData(key: 'token').then((value) {
-      token = value;
-    });
-    DioHelper.postData(
+  void changeFavorite({required int productId, int? index}) async {
+    String token = await CacheHelper.getData(key: 'token') ?? '';
+    Response response = await DioHelper.postData(
       url: "favorites",
       data: {
         'product_id': productId,
       },
       token: token,
       lang: 'en',
+    );
+    favoritesModel = ChangeFavoritesModel.fromJson(json: response.data);
+
+    productModel!.data!.products[index!].isFavorite =
+        !productModel!.data!.products[index].isFavorite!;
+
+    print(productModel!.data!.products[index].isFavorite!);
+    emit(ChangeFavoritesSuccessState());
+  }
+
+  void getFavorite() async {
+    String? token = await CacheHelper.getData(key: 'token');
+    DioHelper.getData(
+      url: "favorites",
+      token: token,
+      lang: 'en',
     ).then((value) {
-      favoritesModel = ChangeFavoritesModel.fromJson(json: value.data);
-      emit(ChangeFavoritesSuccessState());
-      emit(state);
+      print(token);
+      print(value.data);
+      emit(GetCategoriesSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ChangeFavoritesErrorState(error: onError.toString()));
+    });
+  }
+
+  void getUseDetails() async {
+    String? token = await CacheHelper.getData(key: 'token');
+    DioHelper.getData(
+      url: "profile",
+      token: token,
+      lang: 'en',
+    ).then((value) {
+      print(value.data);
+      emit(GetCategoriesSuccessState());
     }).catchError((onError) {
       print(onError.toString());
       emit(ChangeFavoritesErrorState(error: onError.toString()));

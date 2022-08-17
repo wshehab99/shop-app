@@ -57,7 +57,9 @@ class ProductsScreen extends StatelessWidget {
                 children: List.generate(
                   cubit.productModel!.data!.products.length,
                   (index) => ProductGridWidget(
-                      model: cubit.productModel!.data!.products[index]),
+                    model: cubit.productModel!.data!.products[index],
+                    index: index,
+                  ),
                 ),
               ),
             ],
