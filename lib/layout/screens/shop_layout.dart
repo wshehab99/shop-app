@@ -32,7 +32,9 @@ class ShopLayout extends StatelessWidget {
     return BlocProvider(
         create: (context) => AppCubit(InitialAppState())
           ..getProducts()
-          ..getCategories(),
+          ..getCategories()
+          ..getFavorite()
+          ..getUseDetails(),
         child: BlocBuilder<AppCubit, AppStates>(
           builder: ((context, state) {
             AppCubit cubit = context.read<AppCubit>();
