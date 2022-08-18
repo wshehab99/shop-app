@@ -7,10 +7,11 @@ import 'package:shop_app/layout/widgets/toast.dart';
 import '../../models/prooduct_model.dart';
 
 class ProductGridWidget extends StatelessWidget {
-  const ProductGridWidget({Key? key, required this.model, this.index})
-      : super(key: key);
+  const ProductGridWidget({
+    Key? key,
+    required this.model,
+  }) : super(key: key);
   final Product model;
-  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +99,6 @@ class ProductGridWidget extends StatelessWidget {
                       onPressed: () {
                         cubit.changeFavorite(
                           productId: model.id!,
-                          index: index,
                         );
                       },
                       icon: model.isFavorite!

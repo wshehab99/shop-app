@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/models/categories_model.dart';
+import 'package:shop_app/models/favorites_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/shop_login_model.dart';
 import 'package:shop_app/shared/local/cache_helper.dart';
@@ -14,7 +15,8 @@ class AppCubit extends Cubit<AppStates> {
   bool showPassword = true;
   int currentIndex = 0;
   HomeModel? productModel;
-
+  List favorites = [];
+  LoginModel? model;
   void changeBottomNavIndex(int index) {
     currentIndex = index;
     emit(ChangeNavigationBarScreenState());
@@ -33,9 +35,9 @@ class AppCubit extends Cubit<AppStates> {
       },
       lang: 'en',
     ).then((value) {
-      LoginModel model = LoginModel.fromJson(json: value.data);
-      print(model.status);
-      emit(LoginSuccessState(model: model));
+      model = LoginModel.fromJson(json: value.data);
+      print(model!.status);
+      emit(LoginSuccessState(model: model!));
     }).catchError((onError) {
       print(onError);
       emit(LoginErrorState(error: onError.toString()));
@@ -59,9 +61,9 @@ class AppCubit extends Cubit<AppStates> {
             },
             lang: 'en')
         .then((value) {
-      LoginModel model = LoginModel.fromJson(json: value.data);
-      print(model.status);
-      emit(LoginSuccessState(model: model));
+      model = LoginModel.fromJson(json: value.data);
+      print(model!.status);
+      emit(LoginSuccessState(model: model!));
     }).catchError((onError) {
       print(onError);
       emit(LoginErrorState(error: onError.toString()));
@@ -101,7 +103,9 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   ChangeFavoritesModel? favoritesModel;
-  void changeFavorite({required int productId, int? index}) async {
+  void changeFavorite({
+    required int productId,
+  }) async {
     String token = await CacheHelper.getData(key: 'token') ?? '';
     Response response = await DioHelper.postData(
       url: "favorites",
@@ -112,28 +116,34 @@ class AppCubit extends Cubit<AppStates> {
       lang: 'en',
     );
     favoritesModel = ChangeFavoritesModel.fromJson(json: response.data);
-
-    productModel!.data!.products[index!].isFavorite =
+    int index = productModel!.data!.products
+        .indexWhere((element) => element.id == productId);
+    productModel!.data!.products[index].isFavorite =
         !productModel!.data!.products[index].isFavorite!;
-
-    print(productModel!.data!.products[index].isFavorite!);
+    favorites = productModel!.data!.products.where((product) {
+      return product.isFavorite == true;
+    }).toList();
     emit(ChangeFavoritesSuccessState());
   }
 
   void getFavorite() async {
     String? token = await CacheHelper.getData(key: 'token');
-    DioHelper.getData(
+    Response response = await DioHelper.getData(
       url: "favorites",
       token: token,
       lang: 'en',
-    ).then((value) {
-      print(token);
-      print(value.data);
-      emit(GetCategoriesSuccessState());
-    }).catchError((onError) {
-      print(onError.toString());
+    ).catchError((onError) {
+      print("error ${onError.toString()}");
+
       emit(ChangeFavoritesErrorState(error: onError.toString()));
     });
+
+    FavoriteModel fav = FavoriteModel.fromJson(json: response.data);
+    for (var element in fav.data!.data) {
+      favorites.add(element.product);
+    }
+
+    emit(GetCategoriesSuccessState());
   }
 
   void getUseDetails() async {
@@ -143,11 +153,32 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
       lang: 'en',
     ).then((value) {
-      print(value.data);
+      model = LoginModel.fromJson(json: value.data);
       emit(GetCategoriesSuccessState());
     }).catchError((onError) {
       print(onError.toString());
       emit(ChangeFavoritesErrorState(error: onError.toString()));
     });
+  }
+
+  void updateUseDetails({required Map<String, dynamic> data}) async {
+    emit(LoadingState());
+    String? token = await CacheHelper.getData(key: 'token');
+    DioHelper.putData(
+      url: "update-profile",
+      data: data,
+      token: token,
+      lang: 'en',
+    ).then((value) {
+      model = LoginModel.fromJson(json: value.data);
+      emit(GetCategoriesSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ChangeFavoritesErrorState(error: onError.toString()));
+    });
+  }
+
+  Future<bool> logout() async {
+    return await CacheHelper.deleteData(key: 'token');
   }
 }
