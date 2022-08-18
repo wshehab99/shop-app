@@ -63,7 +63,7 @@ class ShopLayout extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SearchScreen()));
+                                  builder: (context) => SearchScreen()));
                         },
                         icon: const Icon(Icons.search))
                   ]),

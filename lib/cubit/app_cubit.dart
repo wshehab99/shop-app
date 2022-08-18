@@ -4,6 +4,7 @@ import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/models/categories_model.dart';
 import 'package:shop_app/models/favorites_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/models/search_model.dart';
 import 'package:shop_app/models/shop_login_model.dart';
 import 'package:shop_app/shared/local/cache_helper.dart';
 import 'package:shop_app/shared/network/dio_helper.dart';
@@ -180,5 +181,24 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<bool> logout() async {
     return await CacheHelper.deleteData(key: 'token');
+  }
+
+  SearchModel? searchModel;
+  void searchProduct(String text) async {
+    emit(LoadingState());
+    String? token = await CacheHelper.getData(key: 'token');
+    Response response = await DioHelper.postData(
+        url: "products/search",
+        token: token,
+        lang: 'en',
+        data: {'text': text}).catchError((onError) {
+      print("error ${onError.toString()}");
+
+      emit(ChangeFavoritesErrorState(error: onError.toString()));
+    });
+
+    searchModel = SearchModel.fromJson(json: response.data);
+
+    emit(GetCategoriesSuccessState());
   }
 }
