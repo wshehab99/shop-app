@@ -30,6 +30,12 @@ ThemeData lightThem = ThemeData(
       elevation: 20.0,
     ),
     textTheme: const TextTheme(
+      headline1: TextStyle(
+        color: Colors.black,
+      ),
+      headline2: TextStyle(
+        color: Colors.black,
+      ),
       bodyText1: TextStyle(
           fontSize: 22, fontWeight: FontWeight.w700, color: Colors.black),
       bodyText2: TextStyle(
@@ -65,6 +71,12 @@ ThemeData darkTheme = ThemeData(
     color: Colors.white,
   ),
   textTheme: const TextTheme(
+    headline1: TextStyle(
+      color: Colors.white,
+    ),
+    headline2: TextStyle(
+      color: Colors.white,
+    ),
     bodyText1: TextStyle(
         fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
     bodyText2: TextStyle(

@@ -5,6 +5,7 @@ import 'package:shop_app/cubit/app_states.dart';
 import 'package:shop_app/layout/screens/login_screen.dart';
 import 'package:shop_app/layout/widgets/shop_button.dart';
 import 'package:shop_app/layout/widgets/shop_text_field.dart';
+import 'package:shop_app/theme/theme_swatch.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key}) : super(key: key);
@@ -36,6 +37,17 @@ class SettingsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Dark Mode',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                              const ThemeSwatch(),
+                            ],
+                          ),
                           Text(
                             "Profile Details",
                             style: Theme.of(context).textTheme.headline2,
